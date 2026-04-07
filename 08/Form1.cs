@@ -19,37 +19,36 @@ namespace _08
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int c = 0;
-            int[] pole = new int[textBox1.Lines.Length]; int i = 0;
+            long c = 0;
+            long[] pole = new long[textBox1.Lines.Length]; int i = 0;
             foreach (string s in textBox1.Lines)
             {
                 try
                 {
-                    if (int.TryParse(s, out c))
+                    c = Convert.ToInt64(s);
+                    pole[i] = c;
+                    i++;
+
+                    if (c > int.MaxValue)
                     {
-                        pole[i] = c;
-                        i++;
+                        throw new OverflowException("vetsi");
                     }
-                    else
+                    else if (c < int.MinValue)
                     {
-                        throw new FormatException();
-                    }
-                    if (c > int.MaxValue || c < int.MinValue)
-                    {
-                        throw new OverflowException();
+                        throw new OverflowException("mensi");
                     }
                 }
                 catch (FormatException)
                 {
                     pole[i] = 0; i++;
                 }
-                catch (OverflowException)
+                catch (OverflowException ex)
                 {
-                    if (c > int.MaxValue)
+                    if (ex.Message == "vetsi")
                     {
                         pole[i] = int.MaxValue;
                     }
-                    else if (c < int.MinValue)
+                    else
                     {
                         pole[i] = int.MinValue;
                     }
